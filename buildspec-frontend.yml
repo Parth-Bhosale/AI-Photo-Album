@@ -8,13 +8,18 @@ phases:
       - test -n "$PHOTO_API_BASE_URL"
       - test -n "$PHOTO_API_KEY"
       - test -f frontend/index.html
-      - |
-        if [ ! -f frontend/sdk/apigClient.js ]; then
-          echo "SDK dependencies not yet committed; importing installed SDK from the existing S3 site."
-          aws s3 sync "s3://$FRONTEND_BUCKET/sdk/" frontend/sdk/
-        fi
+      - test -f frontend/app.js
+      - test -f frontend/style.css
       - test -f frontend/sdk/apigClient.js
       - test -f frontend/sdk/lib/axios/dist/axios.standalone.js
+      - test -f frontend/sdk/lib/CryptoJS/rollups/crypto-js.js
+      - test -f frontend/sdk/lib/CryptoJS/rollups/sha256.js
+      - test -f frontend/sdk/lib/CryptoJS/components/hmac.js
+      - test -f frontend/sdk/lib/CryptoJS/components/enc-base64.js
+      - test -f frontend/sdk/lib/url-template/url-template.js
+      - test -f frontend/sdk/lib/apiGatewayCore/sigV4Client.js
+      - test -f frontend/sdk/lib/apiGatewayCore/apiGatewayClient.js
+      - test -f frontend/sdk/lib/apiGatewayCore/simpleHttpClient.js
       - test -f frontend/sdk/lib/apiGatewayCore/utils.js
   build:
     commands:
