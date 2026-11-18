@@ -8,8 +8,8 @@ The AWS app works, but **CodePipeline is not set up yet**. The tracked Lambda im
 
 ## Repository layout
 
-- `backend/index_photos/index.py`: S3 create/delete indexing
-- `backend/search_photos/index.py`: Lex search with arbitrary custom labels
+- `backend/LF1/index.py`: S3 create/delete indexing
+- `backend/LF2/index.py`: Lex search with arbitrary custom labels
 - `buildspec-backend.yml`: CodeBuild P1, deploys both functions
 - `buildspec-frontend.yml`: CodeBuild P2, syncs frontend to S3
 - `frontend/`: **still needs the current SDK-integrated website files**, including `sdk/`
