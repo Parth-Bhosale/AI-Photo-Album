@@ -19,15 +19,15 @@
 - [x] `backend/LF1/index.py` and `backend/LF2/index.py` synchronized from working Lambda code.
 - [x] `buildspec-backend.yml`, `buildspec-frontend.yml`, `cloudformation/baseline.yaml`.
 - [x] Frontend `index.html`, `style.css`, `app.js`, `config.example.js`.
-- [ ] Add **all generated files** under `frontend/sdk/` from the provided SDK-integrated frontend ZIP. Do not commit `frontend/config.js`.
-- [ ] Once SDK is committed, remove the S3 SDK bootstrap fallback from `buildspec-frontend.yml` and deploy purely from GitHub.
+- [x] Commit the generated `frontend/sdk/` directory, excluding the real `frontend/config.js`.
+- [x] Remove the S3 SDK bootstrap fallback; P2 succeeds from GitHub-only SDK files after commit `f770bf7`.
 
 ## Acceptance criteria before submission
 - [ ] Search an image by one of its automatically detected Rekognition labels.
 - [ ] Search using two keywords and confirm expected photo matches.
 - [ ] Search by each of two custom labels on the same photo.
 - [ ] Delete an S3 image and verify its result disappears from OpenSearch; retain an image for the demo.
-- [ ] Show a new commit automatically deploying backend and frontend code.
+- [x] Demonstrate successful P1 and P2 after a GitHub commit (both succeeded after `f770bf7`); automatic triggering specifically confirmed for P2.
 - [ ] Show CloudFormation stack resources, outputs including the public website URL, and a working website.
 
 ## Evidence to capture
@@ -42,5 +42,5 @@
 ## Notes
 - Do not commit real API keys, IAM access keys or other secrets to GitHub. Browser API Gateway usage-plan keys are *not* authentication credentials; configure appropriate quotas and throttling.
 - The CloudFormation template was built as a baseline and is not a complete reproduction of the manually configured Lex, OpenSearch or CodePipeline resources.
-- The generated SDK currently comes from the already-deployed S3 website in CodeBuild when the `frontend/sdk/` directory is missing; make the repo self-contained before submission.
+- The generated SDK files are committed in GitHub, and CodeBuild P2 no longer needs to retrieve them from the existing S3 site.
 - Stop or delete billable AWS resources when no longer needed, after documenting the assignment.
