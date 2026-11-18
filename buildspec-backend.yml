@@ -1,0 +1,19 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  pre_build:
+    commands:
+      - test -n "$INDEX_FUNCTION_NAME" && test -n "$SEARCH_FUNCTION_NAME"
+      - python -m py_compile backend/index_photos/index.py backend/search_photos/index.py
+  build:
+    commands:
+      - mkdir -p /tmp/photo-build
+      - cd backend/index_photos && zip -j /tmp/photo-build/index-photos.zip index.py && cd ../..
+      - cd backend/search_photos && zip -j /tmp/photo-build/search-photos.zip index.py && cd ../..
+  post_build:
+    commands:
+      - aws lambda update-function-code --function-name "$INDEX_FUNCTION_NAME" --zip-file fileb:///tmp/photo-build/index-photos.zip
+      - aws lambda wait function-updated --function-name "$INDEX_FUNCTION_NAME"
+      - aws lambda update-function-code --function-name "$SEARCH_FUNCTION_NAME" --zip-file fileb:///tmp/photo-build/search-photos.zip
+      - aws lambda wait function-updated --function-name "$SEARCH_FUNCTION_NAME"
