@@ -1,0 +1,13 @@
+# Never commit live browser configuration or secrets
+frontend/config.js
+**/.env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+.venv/
+*.zip
+.DS_Store
