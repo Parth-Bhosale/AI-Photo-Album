@@ -12,8 +12,8 @@ The AWS app works, but **CodePipeline is not set up yet**. The tracked Lambda im
 - `backend/LF2/index.py`: Lex search with arbitrary custom labels
 - `buildspec-backend.yml`: CodeBuild P1, deploys both functions
 - `buildspec-frontend.yml`: CodeBuild P2, syncs frontend to S3
-- `frontend/`: **still needs the current SDK-integrated website files**, including `sdk/`
-- `cloudformation/baseline.yaml`: **still needs to be added** from the original starter project
+- `frontend/`: HTML, CSS, JS and API key placeholder are committed; generated `sdk/` dependencies still need to be uploaded to make this repository fully self-contained
+- `cloudformation/baseline.yaml`: committed CloudFormation baseline for the assignment; do not redeploy the template over your working stack without a change review
 
 ## P1 setup
 
@@ -34,7 +34,7 @@ Use the same repository `main`, with `buildspec-frontend.yml`. CodeBuild environ
 
 The build writes browser-visible `frontend/config.js`. API keys in public browser apps are visible to website visitors and are not an authentication mechanism; use API Gateway quotas/throttling and avoid using IAM secrets.
 
-The CodeBuild role needs `s3:ListBucket` and `s3:PutObject`, `s3:DeleteObject`, `s3:GetObject` on the frontend bucket. **Do not run P2 until all frontend and SDK files are present**, because `aws s3 sync --delete` deletes objects not in the build.
+The CodeBuild role needs `s3:ListBucket` and `s3:PutObject`, `s3:DeleteObject`, `s3:GetObject` on the frontend bucket. P2 currently imports the previously deployed `sdk/` dependencies from the existing S3 frontend bucket when they are absent from GitHub, validates key SDK files, then runs `aws s3 sync --delete`. The CodeBuild role therefore needs read permission on that prefix. This bridge protects the working app but **commit the full generated `frontend/sdk/` directory to GitHub for reproducible deployment**. Do not remove the existing S3 SDK files until that is done.
 
 ## Lambda configuration
 
