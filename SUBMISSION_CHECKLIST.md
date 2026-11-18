@@ -13,7 +13,7 @@
 - [x] Backend CodePipeline P1 Source + CodeBuild succeed, and searches/uploads pass after deployment.
 - [x] Frontend CodePipeline P2 Source + CodeBuild succeed, and all four post-P2 frontend tests pass.
 - [x] GitHub commit `db0e4f7` changes the live S3 website footer to include **GitHub deployment check**.
-- [ ] Confirm the footer commit appeared as an automatically triggered execution in P2 *without manually releasing a change*, if this has not already been checked.
+- [x] Frontend P2 automatically triggered from GitHub commit `db0e4f7` without manually selecting Release change; the updated footer appeared on the S3 website.
 
 ## Repository completeness
 - [x] `backend/LF1/index.py` and `backend/LF2/index.py` synchronized from working Lambda code.
