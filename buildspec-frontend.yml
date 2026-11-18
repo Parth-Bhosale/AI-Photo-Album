@@ -1,0 +1,26 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  pre_build:
+    commands:
+      - test -n "$FRONTEND_BUCKET"
+      - test -n "$PHOTO_API_BASE_URL"
+      - test -n "$PHOTO_API_KEY"
+      - test -f frontend/index.html
+      - test -f frontend/sdk/apigClient.js
+  build:
+    commands:
+      - |
+        python - <<'PY'
+        import json, os
+        from pathlib import Path
+        Path("frontend/config.js").write_text(
+          "window.PHOTO_APP_CONFIG = " +
+          json.dumps({"apiBaseUrl": os.environ["PHOTO_API_BASE_URL"],
+                      "apiKey": os.environ["PHOTO_API_KEY"]}) + ";\n"
+        )
+        PY
+  post_build:
+    commands:
+      - aws s3 sync frontend/ "s3://$FRONTEND_BUCKET/" --delete --exclude '*.md' --exclude 'config.example.js'
