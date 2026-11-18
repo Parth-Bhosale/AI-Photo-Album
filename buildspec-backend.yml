@@ -5,7 +5,7 @@ phases:
   pre_build:
     commands:
       - test -n "$INDEX_FUNCTION_NAME" && test -n "$SEARCH_FUNCTION_NAME"
-      - python -m py_compile backend/index_photos/index.py backend/search_photos/index.py
+      - python -m py_compile backend/LF1/index.py backend/LF2/index.py
   build:
     commands:
       - mkdir -p /tmp/photo-build
