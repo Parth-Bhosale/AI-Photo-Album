@@ -4,7 +4,7 @@ Natural-language photo search using S3, Lambda, Rekognition, OpenSearch, Lex V2,
 
 ## Status
 
-The AWS app works, but **CodePipeline is not set up yet**. The tracked Lambda implementations include S3 deletion support and the Lex fallback fix discussed in chat. **Compare these files against the latest running AWS Lambda code before enabling automatic deployment**.
+Both CodePipeline P1 (backend) and P2 (frontend) were deployed and successfully tested. Lambda LF1 and LF2 were synchronized from the working AWS code supplied for this assignment. P2 automatically deployed a GitHub frontend commit; a later commit `f770bf7` removed the temporary SDK download step, and both pipelines succeeded afterward.
 
 ## Repository layout
 
@@ -12,7 +12,7 @@ The AWS app works, but **CodePipeline is not set up yet**. The tracked Lambda im
 - `backend/LF2/index.py`: Lex search with arbitrary custom labels
 - `buildspec-backend.yml`: CodeBuild P1, deploys both functions
 - `buildspec-frontend.yml`: CodeBuild P2, syncs frontend to S3
-- `frontend/`: HTML, CSS, JS and API key placeholder are committed; generated `sdk/` dependencies still need to be uploaded to make this repository fully self-contained
+- `frontend/`: HTML, CSS, JavaScript, API key placeholder and complete generated `sdk/` dependencies are committed; the build generates `config.js` at deployment time
 - `cloudformation/baseline.yaml`: committed CloudFormation baseline for the assignment; do not redeploy the template over your working stack without a change review
 
 ## P1 setup
@@ -34,7 +34,7 @@ Use the same repository `main`, with `buildspec-frontend.yml`. CodeBuild environ
 
 The build writes browser-visible `frontend/config.js`. API keys in public browser apps are visible to website visitors and are not an authentication mechanism; use API Gateway quotas/throttling and avoid using IAM secrets.
 
-The CodeBuild role needs `s3:ListBucket` and `s3:PutObject`, `s3:DeleteObject`, `s3:GetObject` on the frontend bucket. P2 currently imports the previously deployed `sdk/` dependencies from the existing S3 frontend bucket when they are absent from GitHub, validates key SDK files, then runs `aws s3 sync --delete`. The CodeBuild role therefore needs read permission on that prefix. This bridge protects the working app but **commit the full generated `frontend/sdk/` directory to GitHub for reproducible deployment**. Do not remove the existing S3 SDK files until that is done.
+The CodeBuild role needs `s3:ListBucket` and `s3:PutObject`, `s3:DeleteObject`, `s3:GetObject` on the frontend bucket. P2 verifies that all generated SDK files exist in GitHub before `aws s3 sync --delete`. All SDK dependencies are now tracked in the repository. The generated `config.js` is excluded from Git history.
 
 ## Lambda configuration
 
@@ -49,4 +49,4 @@ Both functions use `OPENSEARCH_ENDPOINT` and `OPENSEARCH_INDEX=photos`. Search L
 5. P2 deployment after a frontend commit.
 6. Baseline CloudFormation creates two S3 buckets, two Lambdas and API Gateway with public frontend website URL.
 
-**Do not enable either pipeline before verifying the exact files against your running application.**
+**Validated:** Both pipelines succeeded after commit `f770bf7` and the frontend upload/search application continued working. Additional multi-keyword, delete-event, and CloudFormation update tests should be captured before submission.
