@@ -1,4 +1,4 @@
-# AI Photo Album — Cloud Computing Assignment 3
+# AI Photo Album
 
 Natural-language photo search using S3, Lambda, Rekognition, OpenSearch, Lex V2, API Gateway, and a static website with generated API Gateway JavaScript SDK.
 
@@ -40,7 +40,7 @@ The CodeBuild role needs `s3:ListBucket` and `s3:PutObject`, `s3:DeleteObject`, 
 
 Both functions use `OPENSEARCH_ENDPOINT` and `OPENSEARCH_INDEX=photos`. Search LF2 also requires `LEX_BOT_ID`, `LEX_BOT_ALIAS_ID`, `LEX_LOCALE_ID=en_US`. Ensure indexing role and OpenSearch domain policy allow `es:ESHttpDelete` for delete handling.
 
-## Assignment acceptance tests
+## acceptance tests
 
 1. Photo upload through S3, and frontend PUT upload with `x-amz-meta-customLabels`.
 2. Searches for Rekognition and custom labels.
