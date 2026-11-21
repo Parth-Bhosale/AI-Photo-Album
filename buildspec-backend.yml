@@ -5,15 +5,16 @@ phases:
   pre_build:
     commands:
       - test -n "$INDEX_FUNCTION_NAME" && test -n "$SEARCH_FUNCTION_NAME"
-      - python -m py_compile backend/LF1/index.py backend/LF2/index.py
+      - python -m py_compile lambda-functions/LF1/index.py lambda-functions/LF2/index.py
   build:
     commands:
       - mkdir -p /tmp/photo-build
-      - cd backend/LF1 && zip -j /tmp/photo-build/index-photos.zip index.py && cd ../..
-      - cd backend/LF2 && zip -j /tmp/photo-build/search-photos.zip index.py && cd ../..
+      - cd lambda-functions/LF1 && zip -j /tmp/photo-build/index-photos.zip index.py && cd ../..
+      - cd lambda-functions/LF2 && zip -j /tmp/photo-build/search-photos.zip index.py && cd ../..
   post_build:
     commands:
       - aws lambda update-function-code --function-name "$INDEX_FUNCTION_NAME" --zip-file fileb:///tmp/photo-build/index-photos.zip
       - aws lambda wait function-updated --function-name "$INDEX_FUNCTION_NAME"
       - aws lambda update-function-code --function-name "$SEARCH_FUNCTION_NAME" --zip-file fileb:///tmp/photo-build/search-photos.zip
       - aws lambda wait function-updated --function-name "$SEARCH_FUNCTION_NAME"
+

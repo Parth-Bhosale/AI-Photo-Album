@@ -7,27 +7,27 @@ phases:
       - test -n "$FRONTEND_BUCKET"
       - test -n "$PHOTO_API_BASE_URL"
       - test -n "$PHOTO_API_KEY"
-      - test -f frontend/index.html
-      - test -f frontend/app.js
-      - test -f frontend/style.css
-      - test -f frontend/sdk/apigClient.js
-      - test -f frontend/sdk/lib/axios/dist/axios.standalone.js
-      - test -f frontend/sdk/lib/CryptoJS/rollups/crypto-js.js
-      - test -f frontend/sdk/lib/CryptoJS/rollups/sha256.js
-      - test -f frontend/sdk/lib/CryptoJS/components/hmac.js
-      - test -f frontend/sdk/lib/CryptoJS/components/enc-base64.js
-      - test -f frontend/sdk/lib/url-template/url-template.js
-      - test -f frontend/sdk/lib/apiGatewayCore/sigV4Client.js
-      - test -f frontend/sdk/lib/apiGatewayCore/apiGatewayClient.js
-      - test -f frontend/sdk/lib/apiGatewayCore/simpleHttpClient.js
-      - test -f frontend/sdk/lib/apiGatewayCore/utils.js
+      - test -f front-end/index.html
+      - test -f front-end/app.js
+      - test -f front-end/style.css
+      - test -f front-end/sdk/apigClient.js
+      - test -f front-end/sdk/lib/axios/dist/axios.standalone.js
+      - test -f front-end/sdk/lib/CryptoJS/rollups/crypto-js.js
+      - test -f front-end/sdk/lib/CryptoJS/rollups/sha256.js
+      - test -f front-end/sdk/lib/CryptoJS/components/hmac.js
+      - test -f front-end/sdk/lib/CryptoJS/components/enc-base64.js
+      - test -f front-end/sdk/lib/url-template/url-template.js
+      - test -f front-end/sdk/lib/apiGatewayCore/sigV4Client.js
+      - test -f front-end/sdk/lib/apiGatewayCore/apiGatewayClient.js
+      - test -f front-end/sdk/lib/apiGatewayCore/simpleHttpClient.js
+      - test -f front-end/sdk/lib/apiGatewayCore/utils.js
   build:
     commands:
       - |
         python - <<'PY'
         import json, os
         from pathlib import Path
-        Path("frontend/config.js").write_text(
+        Path("front-end/config.js").write_text(
           "window.PHOTO_APP_CONFIG = " +
           json.dumps({"apiBaseUrl": os.environ["PHOTO_API_BASE_URL"],
                       "apiKey": os.environ["PHOTO_API_KEY"]}) + ";\n"
@@ -35,4 +35,5 @@ phases:
         PY
   post_build:
     commands:
-      - aws s3 sync frontend/ "s3://$FRONTEND_BUCKET/" --delete --exclude '*.md' --exclude 'config.example.js'
+      - aws s3 sync front-end/ "s3://$FRONTEND_BUCKET/" --delete --exclude '*.md' --exclude 'config.example.js'
+
