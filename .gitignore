@@ -1,5 +1,5 @@
 # Never commit live browser configuration or secrets
-frontend/config.js
+front-end/config.js
 **/.env
 .env
 .env.*
